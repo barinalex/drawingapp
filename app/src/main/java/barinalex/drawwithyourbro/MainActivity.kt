@@ -1,5 +1,7 @@
 package barinalex.drawwithyourbro
 
+import android.content.res.Configuration
+import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,8 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawSurface: DrawSurface
 
 
-    val drawFragment = DrawFragment()
-    val listOfDrawsFragment = ListOfDrawsFragment()
+    lateinit var drawFragment : DrawFragment
+    lateinit var listOfDrawsFragment : ListOfDrawsFragment
 
     val surfaceName = "basic surface"
 
@@ -26,13 +28,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        drawFragment = DrawFragment()
+        listOfDrawsFragment = ListOfDrawsFragment()
+
         setContentView(R.layout.activity_main)
         val toolbar : Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.flFragment, drawFragment)
+                add(R.id.flFragment, drawFragment)
                 commit()
             }
         }
@@ -56,6 +61,7 @@ class MainActivity : AppCompatActivity() {
          */
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -68,44 +74,18 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.draw -> {
-                if (supportFragmentManager.findFragmentByTag(listOfDrawsFragment.fragmentTag) != null){
-                    supportFragmentManager.beginTransaction().apply {
-                        hide(supportFragmentManager.findFragmentByTag(listOfDrawsFragment.fragmentTag)!!)
-                        commit()
-                    }
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.flFragment, drawFragment)
+                    commit()
                 }
-                if (supportFragmentManager.findFragmentByTag(drawFragment.fragmentTag) == null) {
-                    supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.flFragment, drawFragment, drawFragment.fragmentTag)
-                        commit()
-                    }
-                }
-                else{
-                    supportFragmentManager.beginTransaction().apply {
-                        show(supportFragmentManager.findFragmentByTag(drawFragment.fragmentTag)!!)
-                        commit()
-                    }
-                }
+                return true
             }
             R.id.list -> {
-                if (supportFragmentManager.findFragmentByTag(drawFragment.fragmentTag) != null){
-                    supportFragmentManager.beginTransaction().apply {
-                        hide(supportFragmentManager.findFragmentByTag(drawFragment.fragmentTag)!!)
-                        commit()
-                    }
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.flFragment, listOfDrawsFragment)
+                    commit()
                 }
-                if (supportFragmentManager.findFragmentByTag(listOfDrawsFragment.fragmentTag) == null) {
-                    supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.flFragment, listOfDrawsFragment, listOfDrawsFragment.fragmentTag)
-                        commit()
-                    }
-                }
-                else{
-                    supportFragmentManager.beginTransaction().apply {
-                        show(supportFragmentManager.findFragmentByTag(listOfDrawsFragment.fragmentTag)!!)
-                        commit()
-                    }
-                }
+                return true
             }
             R.id.settings -> {
                 /*

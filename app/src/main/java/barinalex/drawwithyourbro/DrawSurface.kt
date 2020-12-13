@@ -17,10 +17,6 @@ class DrawSurface : View, Observer{
         model.addObserver(this)
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
-        super.onSizeChanged(width, height, oldWidth, oldHeight)
-    }
-
     inner class MygestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(e: MotionEvent?): Boolean {
             model.switchMode()

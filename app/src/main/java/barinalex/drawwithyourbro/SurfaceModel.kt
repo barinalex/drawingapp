@@ -1,11 +1,29 @@
 package barinalex.drawwithyourbro
 
 import android.graphics.*
+import barinalex.drawwithyourbro.data.DrawingDatabase
 import barinalex.drawwithyourbro.drawableObjects.DrawableObject
 import barinalex.drawwithyourbro.drawableObjects.pathBased.PathLine
 import java.util.*
 
 class SurfaceModel : Observable{
+
+    companion object{
+        private var INSTANCE: SurfaceModel? = null
+
+        fun getInstance(screenBorders : Point): SurfaceModel{
+            val tempInstance = INSTANCE
+            if (tempInstance != null){
+                tempInstance.SCREENBORDERS.set(screenBorders.x, screenBorders.y)
+                return tempInstance
+            }
+            else{
+                val instance = SurfaceModel(screenBorders)
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 
     private var currentDrawing : DrawableObject
     private var canvas: Canvas
@@ -14,7 +32,7 @@ class SurfaceModel : Observable{
     var bitmap : Bitmap
     var bitmapCoordinates: PointF
     private val BACKGROUNDCOLOR = Color.BLACK
-    private val SCREENBORDERS : Point
+    private var SCREENBORDERS : Point
 
     val surfaceName = "basic surface"
 
