@@ -9,30 +9,16 @@ import java.util.*
 
 class DrawSurface : View, Observer{
     val model : SurfaceModel
-    lateinit var bitmap :Bitmap
-    lateinit var extraCanvas: Canvas
     val gestureDetector : GestureDetector
-    val screenBorders : Point
 
     constructor(context: Context, model: SurfaceModel): super(context){
         this.model = model
-
-        val displayMetrics = context.resources.displayMetrics
-        screenBorders = Point(displayMetrics.widthPixels,displayMetrics.heightPixels)
-        this.minimumWidth = screenBorders.x
-        this.minimumHeight = screenBorders.y
-
         gestureDetector = GestureDetector(context, MygestureListener())
         model.addObserver(this)
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        if (::bitmap.isInitialized)
-            bitmap.recycle()
-        bitmap = Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888)
-        extraCanvas = Canvas(bitmap)
-        extraCanvas.drawColor(Color.BLACK)
     }
 
     inner class MygestureListener : GestureDetector.SimpleOnGestureListener() {
@@ -59,9 +45,7 @@ class DrawSurface : View, Observer{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        //extraCanvas.drawColor(Color.BLACK)
-        model.onDraw(extraCanvas)
-        canvas.drawBitmap(bitmap, model.bitmapCoordinates.x, model.bitmapCoordinates.y, null)
+        canvas.drawBitmap(model.bitmap, model.bitmapCoordinates.x, model.bitmapCoordinates.y, null)
     }
 
     override fun update(o: Observable?, arg: Any?) {

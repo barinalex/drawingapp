@@ -1,26 +1,35 @@
 package barinalex.drawwithyourbro
 
-import android.graphics.Canvas
-import android.graphics.PointF
+import android.graphics.*
 import barinalex.drawwithyourbro.drawableObjects.DrawableObject
 import barinalex.drawwithyourbro.drawableObjects.pathBased.PathLine
 import java.util.*
 
 class SurfaceModel : Observable{
 
-    //val drawableObjects : Stack<DrawableObject>
     private var currentDrawing : DrawableObject
-    var bitmapCoordinates: PointF
+    private var canvas: Canvas
     private lateinit var prevPoint : PointF
+
+    var bitmap : Bitmap
+    var bitmapCoordinates: PointF
+    private val BACKGROUNDCOLOR = Color.BLACK
+    private val SCREENBORDERS : Point
+
+    val surfaceName = "basic surface"
+
     enum class Mode{
         DRAW, MOVE
     }
     private var mode = Mode.DRAW
 
-    constructor() : super(){
-        //drawableObjects = Stack()
+    constructor(screenBorders : Point)  : super(){
         bitmapCoordinates = PointF(0f,0f)
         currentDrawing = PathLine()
+        SCREENBORDERS = Point(screenBorders.x, screenBorders.y)
+        bitmap = Bitmap.createBitmap(SCREENBORDERS.x, SCREENBORDERS.y, Bitmap.Config.ARGB_8888)
+        canvas = Canvas(bitmap)
+        canvas.drawColor(BACKGROUNDCOLOR)
     }
 
     fun switchMode(){
@@ -30,18 +39,20 @@ class SurfaceModel : Observable{
         }
     }
 
+    fun drawBitmap(bitmap: Bitmap){
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+    }
+
     fun onDown(point: PointF){
         when(mode){
             Mode.DRAW -> {
                 currentDrawing.clear()
-                point.x -= bitmapCoordinates.x
-                point.y -= bitmapCoordinates.y
-                currentDrawing.initObject(point)
-                //drawableObjects.push(currentDrawing)
+                currentDrawing.initObject(Utils.substract(point, bitmapCoordinates))
+                currentDrawing.draw(canvas)
                 notifyAllOnChange()
             }
             Mode.MOVE -> {
-                prevPoint = point
+                prevPoint = PointF(point.x, point.y)
             }
         }
     }
@@ -49,22 +60,15 @@ class SurfaceModel : Observable{
     fun onMove(point: PointF){
         when(mode){
             Mode.DRAW -> {
-                point.x -= bitmapCoordinates.x
-                point.y -= bitmapCoordinates.y
-                currentDrawing.drawObject(point)
+                currentDrawing.drawObject(Utils.substract(point, bitmapCoordinates))
             }
             Mode.MOVE -> {
-                //val offset = PointF(point.x - prevPoint.x, point.y - prevPoint.y)
                 bitmapCoordinates.x += point.x - prevPoint.x
                 bitmapCoordinates.y += point.y - prevPoint.y
-                /*
-                for (drawableObject in drawableObjects){
-                    drawableObject.moveObject(offset)
-                }
-                */
-                prevPoint = point
+                prevPoint = PointF(point.x, point.y)
             }
         }
+        currentDrawing.draw(canvas)
         notifyAllOnChange()
     }
 
@@ -78,15 +82,6 @@ class SurfaceModel : Observable{
 
             }
         }
-    }
-
-    fun onDraw(canvas: Canvas){
-        currentDrawing.draw(canvas)
-        /*
-        for (drawableObject in drawableObjects){
-            drawableObject.draw(canvas)
-        }
-        */
     }
 
     fun notifyAllOnChange(){

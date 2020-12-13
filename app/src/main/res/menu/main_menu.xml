@@ -5,6 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="barinale.booklook.MainActivity">
     <item
+        android:id="@+id/draw"
+        android:orderInCategory="100"
+        android:title="draw"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/list"
+        android:orderInCategory="100"
+        android:title="list"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/settings"
         android:orderInCategory="100"
         android:title="settings"
