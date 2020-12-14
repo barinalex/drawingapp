@@ -69,6 +69,10 @@ class SurfaceModel : Observable{
         canvas.drawBitmap(bitmap, 0f, 0f, null)
     }
 
+    fun clearSurface(){
+        canvas.drawColor(BACKGROUNDCOLOR)
+    }
+
     fun onDown(point: PointF){
         when(mode){
             Mode.DRAW -> {

@@ -22,4 +22,22 @@ class DrawingViewModel(application: Application): AndroidViewModel(application) 
             repository.addDrawing(drawing)
         }
     }
+
+    fun updateDrawing(drawing: Drawing){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateDrawing(drawing)
+        }
+    }
+
+    fun deleteDrawing(drawing: Drawing){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteDrawing(drawing)
+        }
+    }
+
+    fun deleteAllDrawings(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllDrawings()
+        }
+    }
 }

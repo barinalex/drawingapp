@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SaveDrawFragment">
+    tools:context=".fragments.UpdateDrawFragment">
 
     <EditText
-        android:id="@+id/saveDrawingName"
+        android:id="@+id/updateDrawingName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="200dp"
         android:ems="10"
-        android:hint="Name your drawing"
+        android:hint="New name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -21,14 +21,11 @@
 
 
     <Button
-        android:id="@+id/save_btn"
+        android:id="@+id/updateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:text="Update"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveDrawingName" />
+        app:layout_constraintTop_toBottomOf="@+id/updateDrawingName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,8 @@ package barinalex.drawwithyourbro.fragments
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
@@ -25,23 +27,26 @@ class SaveDrawFragment : Fragment(R.layout.fragment_save_draw) {
         mDrawingViewModel = ViewModelProvider(this).get(DrawingViewModel::class.java)
         view.save_btn.setOnClickListener{
             insertToDatabase()
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
+
 
     private fun insertToDatabase(){
         val name = saveDrawingName.text.toString()
         if (!TextUtils.isEmpty(name)){
             val surfaceModel = SurfaceModel.getInstance()
             //store bitmap and save (?path) to database
-            //val file = File(requireActivity().filesDir, name)
+            val file = File(requireContext().filesDir, name)
             //if (file.exists()) {
-                //Utils.bitmapToFile(surfaceModel.bitmap, file)
+                Utils.bitmapToFile(surfaceModel.bitmap, file)
                 val drawing = Drawing(0, name)
                 mDrawingViewModel.addDrawing(drawing)
                 Toast.makeText(requireActivity(), "drawing saved", Toast.LENGTH_LONG).show()
             //}else{
-            //    Toast.makeText(requireActivity(), "failed to save", Toast.LENGTH_LONG).show()
+                //Toast.makeText(requireActivity(), "failed to save", Toast.LENGTH_LONG).show()
             //}
+            saveDrawingName.setText("")
         }
         else{
             Toast.makeText(activity, "fill out the filds", Toast.LENGTH_LONG).show()
