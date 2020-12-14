@@ -1,7 +1,5 @@
 package barinalex.drawwithyourbro
 
-import android.content.res.Configuration
-import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +7,9 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import barinalex.drawwithyourbro.data.DrawingViewModel
+import barinalex.drawwithyourbro.fragments.SaveDrawFragment
 import barinalex.drawwithyourbro.fragments.DrawFragment
-import barinalex.drawwithyourbro.fragments.ListOfDrawsFragment
+import barinalex.drawwithyourbro.fragments.LoadDrawFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +19,8 @@ class MainActivity : AppCompatActivity() {
 
 
     lateinit var drawFragment : DrawFragment
-    lateinit var listOfDrawsFragment : ListOfDrawsFragment
+    lateinit var saveDrawFragment: SaveDrawFragment
+    lateinit var loadDrawFragment : LoadDrawFragment
 
     val surfaceName = "basic surface"
 
@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         drawFragment = DrawFragment()
-        listOfDrawsFragment = ListOfDrawsFragment()
+        saveDrawFragment = SaveDrawFragment()
+        loadDrawFragment = LoadDrawFragment()
 
         setContentView(R.layout.activity_main)
         val toolbar : Toolbar = findViewById(R.id.toolbar)
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         val draw_layout : LinearLayout = findViewById(R.id.draw_layout);
         drawSurface = DrawSurface(this, surfaceModel)
         draw_layout.addView(drawSurface)
-0
+
         val file = File(this.filesDir, surfaceName)
         if (file.exists())
             surfaceModel.drawBitmap(Utils.fileToBitmap(file))
@@ -80,9 +81,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 return true
             }
-            R.id.list -> {
+            R.id.save -> {
                 supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.flFragment, listOfDrawsFragment)
+                    replace(R.id.flFragment, saveDrawFragment)
+                    commit()
+                }
+                return true
+            }
+            R.id.load -> {
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.flFragment, loadDrawFragment)
                     commit()
                 }
                 return true
@@ -102,6 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        SurfaceModel.destroy()
         /*
         val file = File(this.filesDir, surfaceModel.surfaceName)
         if (file.exists())

@@ -10,9 +10,14 @@
         android:title="draw"
         app:showAsAction="never" />
     <item
-        android:id="@+id/list"
+        android:id="@+id/save"
         android:orderInCategory="100"
-        android:title="list"
+        android:title="save"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/load"
+        android:orderInCategory="100"
+        android:title="load"
         app:showAsAction="never" />
     <item
         android:id="@+id/settings"

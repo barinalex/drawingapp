@@ -8,4 +8,5 @@ data class Drawing (
     @PrimaryKey(autoGenerate = true)
     val id : Int,
     val name : String
+    //val bitmapPath : String
 )

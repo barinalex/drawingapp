@@ -11,6 +11,14 @@ class SurfaceModel : Observable{
     companion object{
         private var INSTANCE: SurfaceModel? = null
 
+        fun getInstance(): SurfaceModel{
+            return INSTANCE!!
+        }
+
+        fun destroy(){
+            INSTANCE = null
+        }
+
         fun getInstance(screenBorders : Point): SurfaceModel{
             val tempInstance = INSTANCE
             if (tempInstance != null){

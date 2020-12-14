@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DrawingViewModel(application: Application): AndroidViewModel(application) {
-    private var readAllData: LiveData<List<Drawing>>
+    var readAllData: LiveData<List<Drawing>>
     private var repository: DrawingRepository
 
     init{
@@ -17,7 +17,7 @@ class DrawingViewModel(application: Application): AndroidViewModel(application) 
         readAllData = repository.readAllData
     }
 
-    fun addUser(drawing: Drawing){
+    fun addDrawing(drawing: Drawing){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addDrawing(drawing)
         }
