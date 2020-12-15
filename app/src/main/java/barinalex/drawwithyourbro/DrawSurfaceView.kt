@@ -18,7 +18,14 @@ class DrawSurfaceView : View, Observer{
     }
 
     inner class MygestureListener : GestureDetector.SimpleOnGestureListener() {
+
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            drawSurfaceModel.switchMode()
+            return true
+        }
+
         override fun onDoubleTap(e: MotionEvent?): Boolean {
+            drawSurfaceModel.centered()
             drawSurfaceModel.switchMode()
             return true
         }
@@ -40,8 +47,9 @@ class DrawSurfaceView : View, Observer{
     }
 
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        canvas.drawBitmap(drawSurfaceModel.bitmap, drawSurfaceModel.position.x, drawSurfaceModel.position.y, null)
+        canvas.drawBitmap(drawSurfaceModel.bitmap,
+                drawSurfaceModel.position.x,
+                drawSurfaceModel.position.y, null)
     }
 
     override fun update(o: Observable?, arg: Any?) {

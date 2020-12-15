@@ -15,17 +15,17 @@ import barinalex.drawwithyourbro.DrawSurfaceModel
 
 class DrawFragment() : Fragment(R.layout.fragment_draw) {
 
+    val newDrawFragment = NewDrawFragment()
     val saveDrawFragment = SaveDrawFragment()
     val loadDrawFragment = LoadDrawFragment()
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(activity, "draw fragment created", Toast.LENGTH_LONG).show()
         val displayMetrics = requireActivity().resources.displayMetrics
-        val borders = Point(displayMetrics.widthPixels,displayMetrics.heightPixels)
-        val surfaceModel = DrawSurfaceModel.getInstance(borders)
-        var drawSurface = DrawSurfaceView(requireActivity(), surfaceModel)
+        val size = Point(displayMetrics.widthPixels,displayMetrics.heightPixels)
+        val surfaceModel = DrawSurfaceModel.getInstance(size)
+        val drawSurface = DrawSurfaceView(requireActivity(), surfaceModel)
         val draw_layout : FrameLayout = view.findViewById(R.id.fragment_draw_main_frame);
         draw_layout.addView(drawSurface)
         setHasOptionsMenu(true)
@@ -38,11 +38,14 @@ class DrawFragment() : Fragment(R.layout.fragment_draw) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.newdrawing -> {
-                val surfaceModel = DrawSurfaceModel.getInstance()
-                surfaceModel.clearSurface()
-                return true
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.flFragment, newDrawFragment)
+                    addToBackStack("NewDrawFragment")
+                    commit()
+                }
+                true
             }
             R.id.save -> {
                 requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -50,7 +53,7 @@ class DrawFragment() : Fragment(R.layout.fragment_draw) {
                     addToBackStack("SaveDrawFragment")
                     commit()
                 }
-                return true
+                true
             }
             R.id.load -> {
                 requireActivity().supportFragmentManager.beginTransaction().apply {
@@ -58,9 +61,9 @@ class DrawFragment() : Fragment(R.layout.fragment_draw) {
                     addToBackStack("LoadDrawFragment")
                     commit()
                 }
-                return true
+                true
             }
+            else -> { super.onOptionsItemSelected(item) }
         }
-        return super.onOptionsItemSelected(item)
     }
 }

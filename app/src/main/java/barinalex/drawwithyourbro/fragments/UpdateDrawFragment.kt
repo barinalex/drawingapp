@@ -34,13 +34,13 @@ class UpdateDrawFragment(drawing: Drawing): Fragment(R.layout.fragment_update_dr
     }
 
     private fun updateDatabase(){
-        val newName = updateDrawingName.text.toString()
+        val newName = new_drawing_name.text.toString()
         if (!TextUtils.isEmpty(newName)){
             val file = File(requireActivity().filesDir, drawing.name)
             file.renameTo(File(requireActivity().filesDir, newName))
             drawingViewModel.updateDrawing(Drawing(drawing.id, newName))
             Toast.makeText(requireActivity(), "drawing is updated", Toast.LENGTH_LONG).show()
-            updateDrawingName.setText("")
+            new_drawing_name.setText("")
         }
         else{
             Toast.makeText(activity, "fill out the filds", Toast.LENGTH_LONG).show()

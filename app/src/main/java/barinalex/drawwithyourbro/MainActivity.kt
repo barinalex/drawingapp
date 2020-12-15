@@ -34,17 +34,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.settings -> {
                 Toast.makeText(this, "settings", Toast.LENGTH_LONG).show()
-                return true
+                true
             }
+            else -> { super.onOptionsItemSelected(item) }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         DrawSurfaceModel.destroy()
+        super.onDestroy()
     }
 }

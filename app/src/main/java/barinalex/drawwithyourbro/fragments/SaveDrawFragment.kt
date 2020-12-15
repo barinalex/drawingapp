@@ -30,14 +30,14 @@ class SaveDrawFragment : Fragment(R.layout.fragment_save_draw) {
 
 
     private fun insertToDatabase(){
-        val name = saveDrawingName.text.toString()
+        val name = drawing_name.text.toString()
         if (!TextUtils.isEmpty(name)){
             val surfaceModel = DrawSurfaceModel.getInstance()
             val file = File(requireContext().filesDir, name)
             Utils.bitmapToFile(surfaceModel.bitmap, file)
             mDrawingViewModel.addDrawing(Drawing(0, name))
             Toast.makeText(requireActivity(), "drawing is saved", Toast.LENGTH_LONG).show()
-            saveDrawingName.setText("")
+            drawing_name.setText("")
         }
         else{
             Toast.makeText(activity, "fill out the filds", Toast.LENGTH_LONG).show()

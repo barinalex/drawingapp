@@ -57,9 +57,7 @@ class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.
     private fun loadDrawing(context: Context, drawing: Drawing){
         val surfaceModel = DrawSurfaceModel.getInstance()
         val file = File(context.filesDir, drawing.name)
-        if (file.exists())
-            surfaceModel.drawBitmap(Utils.fileToBitmap(file))
-        surfaceModel.notifyAllOnChange()
+        surfaceModel.loadBitmap(Utils.fileToBitmap(file))
     }
 
     fun setData(drawing: List<Drawing>){

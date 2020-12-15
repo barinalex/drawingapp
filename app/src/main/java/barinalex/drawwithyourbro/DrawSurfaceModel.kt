@@ -1,6 +1,7 @@
 package barinalex.drawwithyourbro
 
 import android.graphics.*
+import androidx.core.graphics.set
 import barinalex.drawwithyourbro.drawableObjects.DrawableObject
 import barinalex.drawwithyourbro.drawableObjects.pathBased.PathLine
 import java.util.*
@@ -10,49 +11,66 @@ class DrawSurfaceModel : Observable{
     companion object{
         private var INSTANCE: DrawSurfaceModel? = null
 
-        fun getInstance(): DrawSurfaceModel{
-            return INSTANCE!!
-        }
-
-        fun destroy(){
-            INSTANCE = null
-        }
-
-        fun getInstance(screenBorders : Point): DrawSurfaceModel{
+        fun getInstance(size : Point? = null): DrawSurfaceModel{
             val tempInstance = INSTANCE
-            if (tempInstance != null){
-                tempInstance.SCREENBORDERS.set(screenBorders.x, screenBorders.y)
-                return tempInstance
+            return if (tempInstance != null){
+                tempInstance
             }
             else{
-                val instance = DrawSurfaceModel(screenBorders)
+                val instance = if (size != null) DrawSurfaceModel(size) else DrawSurfaceModel()
                 INSTANCE = instance
-                return instance
+                instance
             }
         }
+
+        fun destroy(){ INSTANCE = null }
     }
 
-    private var currentDrawing : DrawableObject
+    private val doStack = Stack<Bitmap>()
+    private val undoStack = Stack<Bitmap>()
+    private val MAXSTACKSIZE = 10
+
+    private var drawing : DrawableObject
     private var canvas: Canvas
     private lateinit var prevPoint : PointF
 
-    var bitmap : Bitmap
+    lateinit var bitmap : Bitmap
     var position: PointF
-    private val BACKGROUNDCOLOR = Color.BLACK
-    private var SCREENBORDERS : Point
+    var size : Point
+    private var backgroundColor : Int
+
+    enum class DrawMode{
+        PATHLINE
+    }
+    private var drawMode = DrawMode.PATHLINE
 
     enum class Mode{
         DRAW, MOVE
     }
     private var mode = Mode.DRAW
 
-    constructor(screenBorders : Point)  : super(){
+    constructor(size : Point = Point(1000,1000),
+                drawing : DrawableObject = PathLine(),
+                backgroundColor: Int = Color.BLACK)  : super(){
+        this.size = Point(size.x, size.y)
+        this.drawing = drawing
+        this.backgroundColor = backgroundColor
         position = PointF(0f,0f)
-        currentDrawing = PathLine()
-        SCREENBORDERS = Point(screenBorders.x, screenBorders.y)
-        bitmap = Bitmap.createBitmap(SCREENBORDERS.x, SCREENBORDERS.y, Bitmap.Config.ARGB_8888)
-        canvas = Canvas(bitmap)
-        canvas.drawColor(BACKGROUNDCOLOR)
+        canvas = Canvas()
+        newSurface()
+    }
+
+    fun newSurface(size: Point = this.size){
+        mode = Mode.DRAW
+        bitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888)
+        canvas.setBitmap(bitmap)
+        canvas.drawColor(backgroundColor)
+        notifyAllOnChange()
+    }
+
+    fun centered(){
+        position.set(0f, 0f)
+        notifyAllOnChange()
     }
 
     fun switchMode(){
@@ -62,23 +80,18 @@ class DrawSurfaceModel : Observable{
         }
     }
 
-    fun drawBitmap(bitmap: Bitmap){
-        clearSurface()
-        position = PointF(0f,0f)
+    fun loadBitmap(bitmap: Bitmap){
+        newSurface(Point(bitmap.width, bitmap.height))
         canvas.drawBitmap(bitmap, 0f, 0f, null)
-    }
-
-    fun clearSurface(){
-        position = PointF(0f,0f)
-        canvas.drawColor(BACKGROUNDCOLOR)
+        notifyAllOnChange()
     }
 
     fun onDown(point: PointF){
         when(mode){
             Mode.DRAW -> {
-                currentDrawing.clear()
-                currentDrawing.initObject(Utils.substract(point, position))
-                currentDrawing.draw(canvas)
+                drawing.clear()
+                drawing.initObject(Utils.substract(point, position))
+                drawing.draw(canvas)
                 notifyAllOnChange()
             }
             Mode.MOVE -> {
@@ -90,7 +103,7 @@ class DrawSurfaceModel : Observable{
     fun onMove(point: PointF){
         when(mode){
             Mode.DRAW -> {
-                currentDrawing.drawObject(Utils.substract(point, position))
+                drawing.drawObject(Utils.substract(point, position))
             }
             Mode.MOVE -> {
                 position.x += point.x - prevPoint.x
@@ -98,7 +111,7 @@ class DrawSurfaceModel : Observable{
                 prevPoint = PointF(point.x, point.y)
             }
         }
-        currentDrawing.draw(canvas)
+        drawing.draw(canvas)
         notifyAllOnChange()
     }
 

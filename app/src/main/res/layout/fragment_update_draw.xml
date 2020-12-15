@@ -7,7 +7,7 @@
     tools:context=".fragments.UpdateDrawFragment">
 
     <EditText
-        android:id="@+id/updateDrawingName"
+        android:id="@+id/new_drawing_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:text="Update"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/updateDrawingName" />
+        app:layout_constraintTop_toBottomOf="@+id/new_drawing_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

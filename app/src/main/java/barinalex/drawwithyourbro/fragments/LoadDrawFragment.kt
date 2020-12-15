@@ -39,11 +39,12 @@ class LoadDrawFragment : Fragment(R.layout.fragment_load_draw) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.deleteall -> {
                 drawingViewModel.deleteAllDrawings()
+                true
             }
+            else -> { super.onOptionsItemSelected(item) }
         }
-        return super.onOptionsItemSelected(item)
     }
 }
