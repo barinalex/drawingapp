@@ -4,27 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import barinalex.drawwithyourbro.R
-import barinalex.drawwithyourbro.SurfaceModel
+import barinalex.drawwithyourbro.DrawSurfaceModel
 import barinalex.drawwithyourbro.Utils
 import barinalex.drawwithyourbro.data.Drawing
 import kotlinx.android.synthetic.main.custom_row.view.*
 import java.io.File
 
 class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
-    val fragment: LoadDrawFragment
+    private val fragment: LoadDrawFragment
 
     init {
         this.fragment = fragment
     }
-    var drawingList = emptyList<Drawing>()
+    private var drawingList = emptyList<Drawing>()
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-    }
+    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row, parent, false))
@@ -53,14 +50,12 @@ class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.
             }
         }
         holder.itemView.delete_button.setOnClickListener {
-            val file = File(fragment.requireContext().filesDir, currentItem.name)
-            file.delete()
             fragment.drawingViewModel.deleteDrawing(currentItem)
         }
     }
 
-    fun loadDrawing(context: Context, drawing: Drawing){
-        val surfaceModel = SurfaceModel.getInstance()
+    private fun loadDrawing(context: Context, drawing: Drawing){
+        val surfaceModel = DrawSurfaceModel.getInstance()
         val file = File(context.filesDir, drawing.name)
         if (file.exists())
             surfaceModel.drawBitmap(Utils.fileToBitmap(file))

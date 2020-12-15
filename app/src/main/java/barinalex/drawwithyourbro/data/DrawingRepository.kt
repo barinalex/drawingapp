@@ -20,4 +20,8 @@ class DrawingRepository (private val drawingDao: DrawingDao) {
     suspend fun deleteAllDrawings(){
         drawingDao.deleteAllDrawings()
     }
+
+    suspend fun readAllAndDelete() : List<Drawing>{
+        return drawingDao.readAllAndDelete()
+    }
 }

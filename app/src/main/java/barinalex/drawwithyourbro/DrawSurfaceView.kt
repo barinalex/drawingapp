@@ -7,19 +7,19 @@ import android.view.MotionEvent
 import android.view.View
 import java.util.*
 
-class DrawSurface : View, Observer{
-    val model : SurfaceModel
+class DrawSurfaceView : View, Observer{
+    val drawSurfaceModel : DrawSurfaceModel
     val gestureDetector : GestureDetector
 
-    constructor(context: Context, model: SurfaceModel): super(context){
-        this.model = model
+    constructor(context: Context, drawSurfaceModel: DrawSurfaceModel): super(context){
+        this.drawSurfaceModel = drawSurfaceModel
         gestureDetector = GestureDetector(context, MygestureListener())
-        model.addObserver(this)
+        drawSurfaceModel.addObserver(this)
     }
 
     inner class MygestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(e: MotionEvent?): Boolean {
-            model.switchMode()
+            drawSurfaceModel.switchMode()
             return true
         }
     }
@@ -28,10 +28,10 @@ class DrawSurface : View, Observer{
         gestureDetector.onTouchEvent(event)
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                model.onDown(PointF(event.x, event.y))
+                drawSurfaceModel.onDown(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_MOVE -> {
-                model.onMove(PointF(event.x, event.y))
+                drawSurfaceModel.onMove(PointF(event.x, event.y))
             }
             MotionEvent.ACTION_UP -> {
             }
@@ -41,7 +41,7 @@ class DrawSurface : View, Observer{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawBitmap(model.bitmap, model.bitmapCoordinates.x, model.bitmapCoordinates.y, null)
+        canvas.drawBitmap(drawSurfaceModel.bitmap, drawSurfaceModel.position.x, drawSurfaceModel.position.y, null)
     }
 
     override fun update(o: Observable?, arg: Any?) {

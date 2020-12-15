@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import barinalex.drawwithyourbro.R
-import barinalex.drawwithyourbro.SurfaceModel
 import barinalex.drawwithyourbro.data.Drawing
 import barinalex.drawwithyourbro.data.DrawingViewModel
 import kotlinx.android.synthetic.main.fragment_update_draw.*
@@ -37,12 +36,10 @@ class UpdateDrawFragment(drawing: Drawing): Fragment(R.layout.fragment_update_dr
     private fun updateDatabase(){
         val newName = updateDrawingName.text.toString()
         if (!TextUtils.isEmpty(newName)){
-            val surfaceModel = SurfaceModel.getInstance()
             val file = File(requireActivity().filesDir, drawing.name)
             file.renameTo(File(requireActivity().filesDir, newName))
-            val updatedDrawing = Drawing(drawing.id, newName)
-            drawingViewModel.updateDrawing(updatedDrawing)
-            Toast.makeText(requireActivity(), "drawing updated", Toast.LENGTH_LONG).show()
+            drawingViewModel.updateDrawing(Drawing(drawing.id, newName))
+            Toast.makeText(requireActivity(), "drawing is updated", Toast.LENGTH_LONG).show()
             updateDrawingName.setText("")
         }
         else{

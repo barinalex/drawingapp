@@ -17,22 +17,20 @@ import java.io.FileInputStream
 class LoadDrawFragment : Fragment(R.layout.fragment_load_draw) {
 
     lateinit var drawingViewModel: DrawingViewModel
-    private lateinit var adapter: ListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(activity, "list fragment created", Toast.LENGTH_LONG).show()
+        setHasOptionsMenu(true)
         //Recyclerview
-        adapter = ListAdapter(this)
+        val adapter = ListAdapter(this)
         val recyclerView = view.recyclerview
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         drawingViewModel = ViewModelProvider(this).get(DrawingViewModel::class.java)
-        drawingViewModel.readAllData.observe(viewLifecycleOwner, Observer {drawing ->
-            adapter.setData(drawing)
+        drawingViewModel.readAllData.observe(viewLifecycleOwner, Observer {drawings ->
+            adapter.setData(drawings)
         })
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -43,10 +41,6 @@ class LoadDrawFragment : Fragment(R.layout.fragment_load_draw) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.deleteall -> {
-                for (drawing in adapter.drawingList){
-                    val file = File(requireContext().filesDir, drawing.name)
-                    file.delete()
-                }
                 drawingViewModel.deleteAllDrawings()
             }
         }

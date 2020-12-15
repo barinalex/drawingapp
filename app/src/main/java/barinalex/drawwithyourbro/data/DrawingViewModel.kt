@@ -6,8 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
 
 class DrawingViewModel(application: Application): AndroidViewModel(application) {
+    val app: Application
+    init {
+        app = application
+    }
     var readAllData: LiveData<List<Drawing>>
     private var repository: DrawingRepository
 
@@ -31,13 +36,18 @@ class DrawingViewModel(application: Application): AndroidViewModel(application) 
 
     fun deleteDrawing(drawing: Drawing){
         viewModelScope.launch(Dispatchers.IO) {
+            val file = File(app.filesDir, drawing.name)
+            file.delete()
             repository.deleteDrawing(drawing)
         }
     }
 
     fun deleteAllDrawings(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllDrawings()
+            for (drawing in repository.readAllAndDelete()){
+                val file = File(app.filesDir, drawing.name)
+                file.delete()
+            }
         }
     }
 }
