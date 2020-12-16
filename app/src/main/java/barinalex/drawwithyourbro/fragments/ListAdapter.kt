@@ -30,10 +30,10 @@ class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = drawingList[position]
         holder.itemView.draw_name.text = currentItem.name
-        holder.itemView.dataRowLayout.setOnClickListener(View.OnClickListener {
+        holder.itemView.dataRowLayout.setOnClickListener {
             fragment.surfaceViewModel.load(currentItem)
             fragment.requireActivity().supportFragmentManager.popBackStack()
-        })
+        }
         holder.itemView.change_button.setOnClickListener {
             val updateDrawFragment = RenameDrawFragment(currentItem)
             val activity = holder.itemView.context as? AppCompatActivity

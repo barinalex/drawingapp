@@ -33,7 +33,7 @@ class SurfaceViewModel(application: Application): AndroidViewModel(application) 
 
     init {
         app = application
-        var drawingDao = DrawingDatabase.getDatabase(application).drawingDao()
+        val drawingDao = DrawingDatabase.getDatabase(application).drawingDao()
         repository = DrawingRepository(drawingDao)
         surface = Surface()
         surfaceLive = MutableLiveData()

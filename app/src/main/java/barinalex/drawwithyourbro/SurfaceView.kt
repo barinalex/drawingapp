@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.Toast
 
 class SurfaceView : View{
-    val surfaceViewModel: SurfaceViewModel
-    val gestureDetector : GestureDetector
-    lateinit var surface: Surface
+    private val surfaceViewModel: SurfaceViewModel
+    private val gestureDetector : GestureDetector
+    private lateinit var surface: Surface
 
     constructor(context: Context, surfaceViewModel: SurfaceViewModel): super(context){
         this.surfaceViewModel = surfaceViewModel
@@ -41,7 +41,6 @@ class SurfaceView : View{
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 surfaceViewModel.onDown(PointF(event.x, event.y))
-                //Toast.makeText(context, "down", Toast.LENGTH_LONG).show()
             }
             MotionEvent.ACTION_MOVE -> {
                 surfaceViewModel.onMove(PointF(event.x, event.y))

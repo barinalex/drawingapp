@@ -14,9 +14,9 @@ import barinalex.drawwithyourbro.SurfaceView
 
 
 class DrawFragment : Fragment(R.layout.fragment_draw) {
-    val newDrawFragment = NewDrawFragment()
-    val saveDrawFragment = SaveDrawFragment()
-    val loadDrawFragment = LoadDrawFragment()
+    private val newDrawFragment = NewDrawFragment()
+    private val saveDrawFragment = SaveDrawFragment()
+    private val loadDrawFragment = LoadDrawFragment()
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
