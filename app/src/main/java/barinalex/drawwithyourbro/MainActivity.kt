@@ -42,9 +42,4 @@ class MainActivity : AppCompatActivity() {
             else -> { super.onOptionsItemSelected(item) }
         }
     }
-
-    override fun onDestroy() {
-        DrawSurfaceModel.destroy()
-        super.onDestroy()
-    }
 }

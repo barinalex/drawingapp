@@ -1,22 +1,22 @@
 package barinalex.drawwithyourbro.data
 
 import android.app.Application
+import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import barinalex.drawwithyourbro.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
 class DrawingViewModel(application: Application): AndroidViewModel(application) {
     val app: Application
-    init {
-        app = application
-    }
     var readAllData: LiveData<List<Drawing>>
     private var repository: DrawingRepository
 
     init{
+        app = application
         var drawingDao = DrawingDatabase.getDatabase(application).drawingDao()
         repository = DrawingRepository(drawingDao)
         readAllData = repository.readAllData
@@ -28,9 +28,11 @@ class DrawingViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
-    fun updateDrawing(drawing: Drawing){
+    fun renameDrawing(drawing: Drawing, newName: String){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateDrawing(drawing)
+            val file = File(app.filesDir, drawing.name)
+            file.renameTo(File(app.filesDir, newName))
+            repository.updateDrawing(Drawing(drawing.id, newName))
         }
     }
 

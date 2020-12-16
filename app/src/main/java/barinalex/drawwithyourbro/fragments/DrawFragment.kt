@@ -6,15 +6,14 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import barinalex.drawwithyourbro.DrawSurfaceView
-import barinalex.drawwithyourbro.R
-import barinalex.drawwithyourbro.DrawSurfaceModel
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import barinalex.drawwithyourbro.*
+import barinalex.drawwithyourbro.SurfaceView
 
 
-class DrawFragment() : Fragment(R.layout.fragment_draw) {
-
+class DrawFragment : Fragment(R.layout.fragment_draw) {
     val newDrawFragment = NewDrawFragment()
     val saveDrawFragment = SaveDrawFragment()
     val loadDrawFragment = LoadDrawFragment()
@@ -22,12 +21,12 @@ class DrawFragment() : Fragment(R.layout.fragment_draw) {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val displayMetrics = requireActivity().resources.displayMetrics
-        val size = Point(displayMetrics.widthPixels,displayMetrics.heightPixels)
-        val surfaceModel = DrawSurfaceModel.getInstance(size)
-        val drawSurface = DrawSurfaceView(requireActivity(), surfaceModel)
+        //val displayMetrics = requireActivity().resources.displayMetrics
+        //val size = Point(displayMetrics.widthPixels,displayMetrics.heightPixels)
         val draw_layout : FrameLayout = view.findViewById(R.id.fragment_draw_main_frame);
-        draw_layout.addView(drawSurface)
+        val surfaceViewModel: SurfaceViewModel by activityViewModels()
+        val surfaceView = SurfaceView(requireContext(), surfaceViewModel)
+        draw_layout.addView(surfaceView)
         setHasOptionsMenu(true)
     }
 

@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
-        <activity android:name="barinalex.drawwithyourbro.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="barinalex.drawwithyourbro.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
