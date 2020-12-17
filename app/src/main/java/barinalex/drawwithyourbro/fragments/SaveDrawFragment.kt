@@ -20,7 +20,6 @@ class SaveDrawFragment : Fragment(R.layout.fragment_save_draw) {
         super.onViewCreated(view, savedInstanceState)
         view.save_btn.setOnClickListener{
             insertToDatabase()
-            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
@@ -31,6 +30,7 @@ class SaveDrawFragment : Fragment(R.layout.fragment_save_draw) {
             surfaceViewModel.save(Drawing(0, name))
             Toast.makeText(requireActivity(), "drawing is saved", Toast.LENGTH_LONG).show()
             drawing_name.setText("")
+            requireActivity().supportFragmentManager.popBackStack()
         }
         else{
             Toast.makeText(activity, "fill out the filds", Toast.LENGTH_LONG).show()

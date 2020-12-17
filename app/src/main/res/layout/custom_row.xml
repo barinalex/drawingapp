@@ -5,17 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="24dp"
-    android:id="@+id/dataRowLayout"
+    android:padding="20dp"
+    android:id="@+id/data_row_layout"
     android:background="?attr/selectableItemBackground"
-    tools:context=".fragments.LoadDrawFragment">
+    tools:context=".fragments.loaddrawfragment.LoadDrawFragment">
 
     <TextView
         android:id="@+id/draw_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="NAME"
-        android:textSize="18dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/change_button"
         app:layout_constraintStart_toStartOf="parent"

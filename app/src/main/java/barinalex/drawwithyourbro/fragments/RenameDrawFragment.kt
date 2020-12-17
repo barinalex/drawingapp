@@ -27,7 +27,6 @@ class RenameDrawFragment(drawing: Drawing): Fragment(R.layout.fragment_rename_dr
         drawingViewModel = ViewModelProvider(this).get(DrawingViewModel::class.java)
         view.renameButton.setOnClickListener{
             updateDatabase()
-            requireActivity().supportFragmentManager.popBackStack()
             //if stack is empty?
         }
     }
@@ -38,6 +37,7 @@ class RenameDrawFragment(drawing: Drawing): Fragment(R.layout.fragment_rename_dr
             drawingViewModel.renameDrawing(drawing, newName)
             Toast.makeText(requireActivity(), "drawing is updated", Toast.LENGTH_LONG).show()
             new_drawing_name.setText("")
+            requireActivity().supportFragmentManager.popBackStack()
         }
         else{
             Toast.makeText(activity, "fill out the filds", Toast.LENGTH_LONG).show()

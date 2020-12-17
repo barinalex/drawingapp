@@ -1,12 +1,12 @@
-package barinalex.drawwithyourbro.fragments
+package barinalex.drawwithyourbro.fragments.loaddrawfragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import barinalex.drawwithyourbro.R
 import barinalex.drawwithyourbro.data.Drawing
+import barinalex.drawwithyourbro.fragments.RenameDrawFragment
 import kotlinx.android.synthetic.main.custom_row.view.*
 
 class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
@@ -30,19 +30,16 @@ class ListAdapter(fragment: LoadDrawFragment): RecyclerView.Adapter<ListAdapter.
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = drawingList[position]
         holder.itemView.draw_name.text = currentItem.name
-        holder.itemView.dataRowLayout.setOnClickListener {
+        holder.itemView.data_row_layout.setOnClickListener {
             fragment.surfaceViewModel.load(currentItem)
             fragment.requireActivity().supportFragmentManager.popBackStack()
         }
         holder.itemView.change_button.setOnClickListener {
-            val updateDrawFragment = RenameDrawFragment(currentItem)
-            val activity = holder.itemView.context as? AppCompatActivity
-            if (activity != null) {
-                activity.supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.flFragment, updateDrawFragment)
-                    addToBackStack("LoadDrawFragment")
-                    commit()
-                }
+            val renameDrawFragment = RenameDrawFragment(currentItem)
+            fragment.requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.flFragment, renameDrawFragment)
+                addToBackStack("RenameDrawFragment")
+                commit()
             }
         }
         holder.itemView.delete_button.setOnClickListener {

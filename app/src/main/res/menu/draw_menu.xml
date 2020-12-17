@@ -5,6 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="barinale.drawwithyourbro.fragments.SaveDrawFragment">
     <item
+        android:id="@+id/newimage"
+        android:orderInCategory="100"
+        android:title="image"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/newdrawing"
         android:orderInCategory="100"
         android:title="new"

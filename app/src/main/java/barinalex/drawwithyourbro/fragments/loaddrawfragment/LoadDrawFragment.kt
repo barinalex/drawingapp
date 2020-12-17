@@ -1,9 +1,8 @@
-package barinalex.drawwithyourbro.fragments
+package barinalex.drawwithyourbro.fragments.loaddrawfragment
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,8 +11,6 @@ import barinalex.drawwithyourbro.R
 import barinalex.drawwithyourbro.SurfaceViewModel
 import barinalex.drawwithyourbro.data.DrawingViewModel
 import kotlinx.android.synthetic.main.fragment_load_draw.view.*
-import java.io.File
-import java.io.FileInputStream
 
 
 class LoadDrawFragment : Fragment(R.layout.fragment_load_draw) {

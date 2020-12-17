@@ -13,6 +13,7 @@ import barinalex.drawwithyourbro.data.DrawingDatabase
 import barinalex.drawwithyourbro.data.DrawingRepository
 import barinalex.drawwithyourbro.drawableObjects.DrawableObject
 import barinalex.drawwithyourbro.drawableObjects.pathBased.PathLine
+import barinalex.drawwithyourbro.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -100,12 +101,17 @@ class SurfaceViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
+    fun setBitmap(bitmap: Bitmap){
+
+        create(Point(bitmap.width, bitmap.height))
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        notifyOnChange()
+    }
+
     fun load(drawing: Drawing){
         val file = File(app.filesDir, drawing.name)
         val bm = Utils.fileToBitmap(file)
-        create(Point(bm.width, bm.height))
-        canvas.drawBitmap(bm, 0f, 0f, null)
-        notifyOnChange()
+        setBitmap(bm)
     }
 
     fun notifyOnChange(){

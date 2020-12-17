@@ -1,9 +1,8 @@
-package barinalex.drawwithyourbro
+package barinalex.drawwithyourbro.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
-import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
